@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dimmy — Road Partner</title>
+    <meta name="description" content="AI-powered road object detection with real-time accident probability tracking.">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <span class="brand">Dimmy</span>
+        <div class="nav-links">
+            <a href="#detect">Detect</a>
+            <a href="#classes">Classes</a>
+            <a href="#accident">Accident Tracker</a>
+        </div>
+        <span class="nav-status" id="nav-status">Connecting…</span>
+    </nav>
+
+    <section class="hero">
+        <h1>AI Road Co Pilot</h1>
+        <p class="hero-sub">
+            Real-time vehicle, pedestrian and obstacle detection powered by deep learning.
+            Features accident probability tracking for safer roads.
+        </p>
+        <div class="hero-actions">
+            <a href="#detect" class="btn btn-primary">Start Detection</a>
+            <a href="#classes" class="btn btn-outline">Learn More</a>
+        </div>
+        <div class="stats-bar">
+            <div class="stat">
+                <span class="stat-value">15+</span>
+                <span class="stat-label">Classes</span>
+            </div>
+            <div class="stat-sep">|</div>
+            <div class="stat">
+                <span class="stat-value">~30</span>
+                <span class="stat-label">FPS</span>
+            </div>
+            <div class="stat-sep">|</div>
+            <div class="stat">
+                <span class="stat-value">0.78</span>
+                <span class="stat-label">mAP@50</span>
+            </div>
+        </div>
+    </section>
+
+    <hr>
+
+    <section class="detect-section" id="detect">
+        <div class="section-header">
+            <h2>Choose Input</h2>
+            <p>Select how you want to run object detection.</p>
+        </div>
+
+        <div class="cards-grid">
+
+            <div class="detect-card">
+                <h3>Upload Image</h3>
+                <p>Upload a single image for object detection analysis.</p>
+                <div class="upload-zone" id="drop-zone-image">
+                    <p class="upload-text">Drop image here</p>
+                    <p class="upload-hint">or click to browse &mdash; .JPG .PNG .WEBP</p>
+                    <input type="file" id="input-image" accept="image/*" hidden>
+                </div>
+                <button class="btn btn-primary" id="btn-detect-image">Detect Objects</button>
+                <p class="status-msg" id="status-image" hidden></p>
+                <div class="result-panel" id="result-image" hidden></div>
+            </div>
+
+            <div class="detect-card">
+                <h3>Upload Video</h3>
+                <p>Upload a video file for frame-by-frame detection.</p>
+                <div class="upload-zone" id="drop-zone-video">
+                    <p class="upload-text">Drop video here</p>
+                    <p class="upload-hint">or click to browse &mdash; .MP4 .AVI .MOV .MKV</p>
+                    <input type="file" id="input-video" accept="video/*" hidden>
+                </div>
+                <button class="btn btn-primary" id="btn-detect-video">Process Video</button>
+                <p class="status-msg" id="status-video" hidden></p>
+                <div class="result-panel" id="result-video" hidden></div>
+            </div>
+
+            <div class="detect-card">
+                <div class="live-badge">Live</div>
+                <h3>Live Camera</h3>
+                <p>Real-time detection with accident probability tracking.</p>
+                <div class="live-preview">
+                    <div class="live-placeholder">
+                        <span>Camera feed</span>
+                    </div>
+                    <video id="live-video" autoplay muted playsinline hidden></video>
+                    <img id="live-annotated" alt="Annotated live feed" hidden>
+                </div>
+                <button class="btn btn-primary" id="btn-start-camera">Start Live Detection</button>
+                <p class="status-msg" id="status-live" hidden></p>
+                <div class="accident-widget">
+                    <div class="widget-header">
+                        <span class="widget-label">Accident Probability</span>
+                        <span class="widget-value" id="accident-value">--</span>
+                    </div>
+                    <div class="widget-bar">
+                        <div class="widget-fill" id="accident-fill" style="width: 0%"></div>
+                    </div>
+                    <div class="widget-levels">
+                        <span>Safe</span>
+                        <span>Moderate</span>
+                        <span>High Risk</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <hr>
+
+    <section class="features-section" id="classes">
+        <div class="section-header">
+            <h2>Detectable Classes</h2>
+            <p>Trained on the Indian Driving Dataset (IDD).</p>
+        </div>
+        <div class="features-grid">
+            <span class="chip">Cars</span>
+            <span class="chip">Motorcycles</span>
+            <span class="chip">Autorickshaws</span>
+            <span class="chip">Trucks</span>
+            <span class="chip">Buses</span>
+            <span class="chip">Pedestrians</span>
+            <span class="chip">Riders</span>
+            <span class="chip">Traffic Signs</span>
+            <span class="chip">Traffic Lights</span>
+            <span class="chip">Animals</span>
+        </div>
+    </section>
+
+    <hr>
+
+    <section class="accident-section" id="accident">
+        <div class="accident-card">
+            <div class="accident-content">
+                <p class="coming-soon">Now Live</p>
+                <h2>Accident Probability Tracker</h2>
+                <p>
+                    The AI analyzes spatial proximity, speed patterns, and trajectory intersections
+                    to calculate a real-time accident probability score.
+                </p>
+                <ul>
+                    <li>Real-time risk scoring (0–100%)</li>
+                    <li>Time-to-Collision (TTC) engine</li>
+                    <li>Proximity &amp; trajectory analysis</li>
+                    <li>Frame-by-frame confidence</li>
+                </ul>
+            </div>
+            <div class="accident-visual">
+                <div class="gauge-ring">
+                    <svg viewBox="0 0 120 120" class="gauge-svg">
+                        <circle cx="60" cy="60" r="52" fill="none" stroke="#ddd" stroke-width="6" />
+                        <circle cx="60" cy="60" r="52" fill="none" stroke="#000" stroke-width="6"
+                            stroke-dasharray="200 327" stroke-dashoffset="0" stroke-linecap="round"
+                            transform="rotate(-90 60 60)" class="gauge-arc" />
+                    </svg>
+                    <div class="gauge-center">
+                        <span class="gauge-number">76</span>
+                        <span class="gauge-unit">%</span>
+                    </div>
+                </div>
+                <span class="gauge-label">Sample risk score</span>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p><strong>DetectIQ</strong> &mdash; YOLOv11 &middot; EfficientNet-B0 &middot; OpenCV &middot; Ultralytics</p>
+        <p class="footer-tech">Python &nbsp;&bull;&nbsp; OpenCV &nbsp;&bull;&nbsp; PyTorch &nbsp;&bull;&nbsp;
+            Ultralytics</p>
+    </footer>
+
+    <script>
+        // ── API connection ──────────────────────────────────────────────
+        // Works when the page is served by `python backend/server.py` (same origin)
+        // and also when index.html is opened directly / from another dev server.
+        const API_CANDIDATES = [location.origin.startsWith('http') ? '' : null, 'http://localhost:8000', 'http://127.0.0.1:8000']
+            .filter(v => v !== null);
+        let apiBase = null;
+        let apiHealth = null;
+
+        async function findApi() {
+            for (const base of API_CANDIDATES) {
+                try {
+                    const r = await fetch(base + '/api/health', { cache: 'no-store' });
+                    if (r.ok) { apiBase = base; apiHealth = await r.json(); return true; }
+                } catch (_) { /* try next */ }
+            }
+            return false;
+        }
+
+        async function ensureApi() {
+            if (apiBase !== null) return true;
+            const ok = await findApi();
+            updateNavStatus(ok);
+            return ok;
+        }
+
+        function updateNavStatus(online) {
+            const el = document.getElementById('nav-status');
+            if (!online) { el.textContent = 'Backend Offline'; el.classList.add('nav-status--offline'); return; }
+            el.classList.remove('nav-status--offline');
+            el.textContent = apiHealth && apiHealth.using_fallback_model ? 'Online · stock model' : 'System Online';
+            if (apiHealth && apiHealth.using_fallback_model) {
+                el.title = 'Trained weights not found (' + apiHealth.yolo_weights + '). Using a generic COCO model.';
+            }
+        }
+
+        async function api(path, options) {
+            if (!(await ensureApi())) {
+                throw new Error('Cannot reach the Dimmy backend. Start it with:  python backend/server.py');
+            }
+            const res = await fetch(apiBase + path, options);
+            if (!res.ok) {
+                let detail = res.statusText;
+                try { detail = (await res.json()).detail || detail; } catch (_) { /* not json */ }
+                throw new Error(detail);
+            }
+            return res.json();
+        }
+
+        findApi().then(updateNavStatus);
+        setInterval(() => { if (apiBase === null) findApi().then(updateNavStatus); }, 5000);
+
+        // ── helpers ─────────────────────────────────────────────────────
+        function el(tag, cls, text) {
+            const e = document.createElement(tag);
+            if (cls) e.className = cls;
+            if (text !== undefined) e.textContent = text;
+            return e;
+        }
+        function setStatus(id, msg, isError) {
+            const s = document.getElementById(id);
+            s.hidden = !msg;
+            s.textContent = msg || '';
+            s.classList.toggle('status-msg--error', !!isError);
+        }
+        function chips(counts) {
+            const wrap = el('div', 'result-chips');
+            Object.entries(counts || {}).forEach(([k, v]) => wrap.appendChild(el('span', 'chip chip--small', k + ' × ' + v)));
+            return wrap;
+        }
+        function signList(signs) {
+            const wrap = el('div', 'result-signs');
+            (signs || []).forEach(s => wrap.appendChild(el('p', null, 'Sign: ' + s.name + ' (' + Number(s.confidence).toFixed(0) + '%)')));
+            return wrap;
+        }
+        const LEVEL_COLOURS = { SAFE: '#1a9c4b', CAUTION: '#e0a100', CRITICAL: '#d62828' };
+        function riskLine(pct, level, extra) {
+            const p = el('p', 'risk-line');
+            p.style.color = LEVEL_COLOURS[level] || '#111';
+            p.textContent = 'Peak accident risk: ' + Number(pct).toFixed(0) + '% (' + level + ')' + (extra || '');
+            return p;
+        }
+        function sparkline(timeline) {
+            if (!timeline || timeline.length < 2) return null;
+            const W = 300, H = 50, tMax = timeline[timeline.length - 1][0] || 1;
+            const pts = timeline.map(([t, r]) => (t / tMax * W).toFixed(1) + ',' + (H - r / 100 * H).toFixed(1)).join(' ');
+            const ns = 'http://www.w3.org/2000/svg';
+            const svg = document.createElementNS(ns, 'svg');
+            svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+            svg.setAttribute('class', 'sparkline');
+            const line = document.createElementNS(ns, 'polyline');
+            line.setAttribute('points', pts);
+            line.setAttribute('fill', 'none');
+            line.setAttribute('stroke', '#111');
+            line.setAttribute('stroke-width', '1.5');
+            svg.appendChild(line);
+            return svg;
+        }
+
+        // ── file pickers / drag & drop ──────────────────────────────────
+        function wireZone(zoneId, inputId) {
+            const zone = document.getElementById(zoneId);
+            const input = document.getElementById(inputId);
+            const refresh = () => {
+                if (!input.files.length) return;
+                zone.querySelector('.upload-text').textContent = input.files[0].name;
+                zone.querySelector('.upload-hint').textContent = 'File selected';
+                zone.classList.add('upload-zone--selected');
+            };
+            zone.addEventListener('click', () => input.click());
+            input.addEventListener('change', refresh);
+            zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('upload-zone--hover'); });
+            zone.addEventListener('dragleave', () => zone.classList.remove('upload-zone--hover'));
+            zone.addEventListener('drop', e => {
+                e.preventDefault();
+                zone.classList.remove('upload-zone--hover');
+                // the original handler never actually stored the dropped file
+                if (e.dataTransfer.files.length) { input.files = e.dataTransfer.files; refresh(); }
+            });
+        }
+        wireZone('drop-zone-image', 'input-image');
+        wireZone('drop-zone-video', 'input-video');
+
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                document.querySelector(link.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // ── image detection ─────────────────────────────────────────────
+        document.getElementById('btn-detect-image').addEventListener('click', async function () {
+            const file = document.getElementById('input-image').files[0];
+            const panel = document.getElementById('result-image');
+            if (!file) { setStatus('status-image', 'Choose an image first.', true); return; }
+            this.disabled = true;
+            panel.hidden = true;
+            setStatus('status-image', 'Detecting…');
+            try {
+                const fd = new FormData();
+                fd.append('file', file);
+                const r = await api('/api/detect/image', { method: 'POST', body: fd });
+                panel.replaceChildren();
+                const img = el('img', 'result-media');
+                img.src = r.image;
+                img.alt = 'Detection result';
+                panel.appendChild(img);
+                const total = Object.values(r.class_counts).reduce((a, b) => a + b, 0);
+                panel.appendChild(el('p', 'result-meta', total + ' object' + (total === 1 ? '' : 's') + ' · ' + r.inference_ms + ' ms'));
+                panel.appendChild(chips(r.class_counts));
+                panel.appendChild(signList(r.signs));
+                if (r.using_fallback_model) {
+                    panel.appendChild(el('p', 'status-msg', 'Using the generic stock model - trained IDD weights were not found.'));
+                }
+                panel.hidden = false;
+                setStatus('status-image', '');
+            } catch (err) {
+                setStatus('status-image', err.message, true);
+            } finally {
+                this.disabled = false;
+            }
+        });
+
+        // ── video detection ─────────────────────────────────────────────
+        document.getElementById('btn-detect-video').addEventListener('click', async function () {
+            const file = document.getElementById('input-video').files[0];
+            const panel = document.getElementById('result-video');
+            if (!file) { setStatus('status-video', 'Choose a video first.', true); return; }
+            this.disabled = true;
+            panel.hidden = true;
+            setStatus('status-video', 'Processing video - this can take a few minutes…');
+            try {
+                const fd = new FormData();
+                fd.append('file', file);
+                const r = await api('/api/detect/video', { method: 'POST', body: fd });
+                const url = apiBase + r.video_url;
+                panel.replaceChildren();
+                if (r.browser_playable) {
+                    const v = el('video', 'result-media');
+                    v.src = url; v.controls = true; v.playsInline = true;
+                    panel.appendChild(v);
+                } else {
+                    panel.appendChild(el('p', 'status-msg', 'Install ffmpeg to preview in the browser - download the result instead.'));
+                }
+                const dl = el('a', 'result-link', 'Download processed video');
+                dl.href = url; dl.download = 'dimmy_result.mp4';
+                panel.appendChild(dl);
+                panel.appendChild(el('p', 'result-meta',
+                    r.frames + ' frames · ' + r.duration_s + ' s' + (r.truncated ? ' (truncated to frame limit)' : '')));
+                panel.appendChild(riskLine(r.max_risk_pct, r.risk_level, ' at ' + r.peak_risk_time_s + ' s'));
+                const spark = sparkline(r.risk_timeline);
+                if (spark) panel.appendChild(spark);
+                panel.appendChild(chips(r.class_counts));
+                panel.appendChild(signList(r.signs));
+                panel.hidden = false;
+                setStatus('status-video', '');
+            } catch (err) {
+                setStatus('status-video', err.message, true);
+            } finally {
+                this.disabled = false;
+            }
+        });
+
+        // ── live camera ─────────────────────────────────────────────────
+        const liveBtn = document.getElementById('btn-start-camera');
+        const liveVideo = document.getElementById('live-video');
+        const liveImg = document.getElementById('live-annotated');
+        const livePlaceholder = document.querySelector('.live-placeholder');
+        let liveStream = null, liveRunning = false, liveSession = null;
+
+        function setAccident(pct, level) {
+            const value = document.getElementById('accident-value');
+            const fill = document.getElementById('accident-fill');
+            if (pct === null) { value.textContent = '--'; fill.style.width = '0%'; fill.style.background = ''; return; }
+            value.textContent = Math.round(pct) + '% · ' + level;
+            fill.style.width = Math.min(100, pct) + '%';
+            fill.style.background = LEVEL_COLOURS[level] || '#111';
+        }
+
+        async function startLive() {
+            setStatus('status-live', '');
+            if (!(await ensureApi())) {
+                setStatus('status-live', 'Cannot reach the Dimmy backend. Start it with:  python backend/server.py', true);
+                return;
+            }
+            try {
+                liveStream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } });
+            } catch (err) {
+                setStatus('status-live', 'Could not access camera: ' + err.message, true);
+                return;
+            }
+            liveSession = 's' + Math.random().toString(36).slice(2, 12);
+            liveVideo.srcObject = liveStream;
+            liveVideo.hidden = false;
+            liveVideo.classList.remove('capture-only');
+            liveImg.hidden = true;
+            livePlaceholder.hidden = true;
+            liveRunning = true;
+            liveBtn.textContent = 'Stop Live Detection';
+            liveLoop();
+        }
+
+        async function stopLive() {
+            liveRunning = false;
+            if (liveStream) liveStream.getTracks().forEach(t => t.stop());
+            liveStream = null;
+            liveVideo.srcObject = null;
+            liveVideo.hidden = true;
+            liveImg.hidden = true;
+            livePlaceholder.hidden = false;
+            liveBtn.textContent = 'Start Live Detection';
+            setAccident(null);
+            if (apiBase !== null && liveSession) {
+                const fd = new FormData();
+                fd.append('session', liveSession);
+                fetch(apiBase + '/api/live/reset', { method: 'POST', body: fd }).catch(() => { });
+            }
+        }
+
+        async function liveLoop() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            while (liveRunning) {
+                try {
+                    if (liveVideo.readyState < 2 || !liveVideo.videoWidth) { await new Promise(r => setTimeout(r, 100)); continue; }
+                    canvas.width = liveVideo.videoWidth;
+                    canvas.height = liveVideo.videoHeight;
+                    ctx.drawImage(liveVideo, 0, 0);
+                    const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', 0.7));
+                    const fd = new FormData();
+                    fd.append('file', blob, 'frame.jpg');
+                    fd.append('session', liveSession);
+                    // sequential on purpose: never queue frames faster than the server can process them
+                    const r = await api('/api/live/frame', { method: 'POST', body: fd });
+                    if (!liveRunning) break;
+                    liveImg.src = r.image;
+                    liveImg.hidden = false;
+                    liveVideo.classList.add('capture-only');   // keep decoding for capture, but hide it
+                    setAccident(r.max_risk_pct, r.risk_level);
+                    setStatus('status-live', r.object_count + ' tracked · ' + r.inference_ms + ' ms/frame');
+                } catch (err) {
+                    setStatus('status-live', err.message, true);
+                    await new Promise(r => setTimeout(r, 1500));
+                }
+            }
+        }
+
+        liveBtn.addEventListener('click', () => (liveRunning ? stopLive() : startLive()));
+        window.addEventListener('beforeunload', () => { if (liveStream) liveStream.getTracks().forEach(t => t.stop()); });
+    </script>
+
+</body>
+
+</html>
